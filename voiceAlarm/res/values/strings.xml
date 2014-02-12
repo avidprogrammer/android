@@ -8,5 +8,6 @@
     <string name="rec_start">Start Recording</string>
     <string name="rec_stop">Stop Recording</string>
     <string name="alarm_status">Alarm</string>
+    <string name="play">Play</string>
 
 </resources>
