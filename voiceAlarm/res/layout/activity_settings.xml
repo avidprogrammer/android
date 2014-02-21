@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Record" >
+    tools:context=".Settings" >
 
     <Switch
         android:id="@+id/alarm_status_switch"
@@ -15,8 +15,8 @@
         android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_below="@+id/alarm_status"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal" >
     </LinearLayout>
 
@@ -41,5 +41,16 @@
         android:enabled="false"
         android:onClick="stopRecord"
         android:text="@string/rec_stop" />
+    <View
+      	android:layout_width="fill_parent"
+     	android:layout_height="2dp"
+        android:background="#CCC"
+        android:paddingTop="50dp" />
+    
+    <Button 
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content"
+    android:text="@string/sel_time" 
+    android:onClick="selTime" />
 
 </LinearLayout>

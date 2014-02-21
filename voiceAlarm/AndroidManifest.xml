@@ -26,8 +26,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.voicealarm.Record"
+            android:name="com.example.voicealarm.Settings"
             android:label="@string/title_activity_record" >
+        </activity>
+        <activity
+            android:name="com.example.voicealarm.TimeSelect"
+            android:label="@string/title_activity_time_select" >
         </activity>
     </application>
 
