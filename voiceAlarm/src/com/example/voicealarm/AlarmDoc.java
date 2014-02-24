@@ -55,10 +55,12 @@ public class AlarmDoc {
 		if (minute < 10)
 			min = "0".concat(min);
 		
-		if (hr > 11) {
+		if (hr > 11) 
 			aPm = "PM";
+
+		if (hr > 12)
 			hr -= 12;
-		}
+
 			
 		return String.valueOf(hr) + ":" + min + " " + aPm;
 	}

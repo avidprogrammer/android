@@ -41,12 +41,14 @@ public class Player implements PlayComplete {
 
 	}
 
+	// Prepare media player asynchronously
 	private OnPreparedListener startPlay = new OnPreparedListener() {
 		public void onPrepared(MediaPlayer mp) {
 			Log.d("DBG", "Finished Sync");
 			mp.start();
 		}
 	};
+
 	private OnCompletionListener finishPlay = new OnCompletionListener() {
 		public void onCompletion(MediaPlayer mp) {
 			clearPlayer();
@@ -57,7 +59,8 @@ public class Player implements PlayComplete {
 
 	public void clearPlayer() {
 		if (plyr != null) {
-			plyr.stop();
+			if (plyr.isPlaying())
+				plyr.stop();
 			plyr.reset();
 		}
 	}

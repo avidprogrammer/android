@@ -30,6 +30,8 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		// Dbase is a singleton class and populates from the settings file.
+		// The settings file is stored in JSON
 		db = Dbase.getInstance();
 		try {
 			db.init(JSON_FILE);
@@ -57,6 +59,7 @@ public class MainActivity extends Activity {
 		initAlarmList();
 	}
 
+	// Initialize new alarm and reset params to default
 	public void addAlarm() {
 		AlarmDoc rec = new AlarmDoc();
 		rec.setHour(0);
@@ -70,6 +73,7 @@ public class MainActivity extends Activity {
 		initAlarmList();
 	}
 
+	// When an alarm row is clicked, open the Settings activity
 	private OnItemClickListener alarmClick = new OnItemClickListener() {
 		public void onItemClick(AdapterView<?> av, View v, int idx, long id) {
 			Log.d("DBG", v.getContext().toString() + " idx:" + idx);
@@ -79,6 +83,9 @@ public class MainActivity extends Activity {
 		}
 	};
 
+
+	// The main screen is a list of alarms.
+	// Populate them by iterating through dBase
 	private void initAlarmList() {
 		ArrayList<String> timeArr = new ArrayList<String>();
 		for (int i = 0; i < db.getNumRecords(); i++) {
@@ -92,6 +99,7 @@ public class MainActivity extends Activity {
 		alarmListView.setOnItemClickListener(alarmClick);
 	}
 
+	// Menu operation
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();

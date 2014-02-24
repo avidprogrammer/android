@@ -130,6 +130,9 @@ public class Dbase {
 		int totIdx = getNumRecords() - 1;
 		AlarmDoc totRec = getRecord(totIdx);
 
+		// When deleting from the array, replace last record
+		// with the one to be deleted to prevent shifting multiple
+		// elements on element deletion
 		if (delIdx != totIdx)
 		{
 			records.set(delIdx, totRec);

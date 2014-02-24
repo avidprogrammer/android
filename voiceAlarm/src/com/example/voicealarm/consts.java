@@ -14,7 +14,6 @@ public class consts {
 	public static final String ALRM_STAT = "status";
 	public static final String TIME_H = "hour";
 	public static final String TIME_M = "min";
-	public static final String AM_PM = "am_pm";
 	public static final String IDX = "idx";
 	public static final String HDG = "alarms";
 	public static final int MAX_REC_DUR = 10 * 1000; // in ms

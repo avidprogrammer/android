@@ -51,6 +51,14 @@ public class Settings extends Activity implements PlayComplete {
 		initSettingVals();
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		stopRecording();
+		mplyr.delPlayer();
+	}
+
+	// On settings activity init, populate params from Dbase
 	private void initSettingVals() {
 		rec = db.getRecord(id);
 		boolean alrmStat = rec.getStat();
@@ -72,6 +80,7 @@ public class Settings extends Activity implements PlayComplete {
 		}
 	}
 
+	// Delete this alarm from Dbase and also the associated audio file
 	private void delAlarm() {
 		AlarmDoc rec = db.getRecord(id);
 		String alrmPath = rec.getTone();
@@ -87,6 +96,7 @@ public class Settings extends Activity implements PlayComplete {
 		this.finish();
 	}
 
+	/* Media Record and Play Functions */
 	public void startRecord(View v) throws Exception {
 		String recFileName = rec.getTone();
 		rcdr = new MediaRecorder();
@@ -106,6 +116,7 @@ public class Settings extends Activity implements PlayComplete {
 			}
 		});
 
+		// If there is no audio file associated, create new
 		if (recFileName == null) {
 			recFileName = "sound" + id + ".3gp";
 			rec.setTone(recFileName);
@@ -138,25 +149,34 @@ public class Settings extends Activity implements PlayComplete {
 		togglePlayBtn(false);
 	}
 
+	/* UI Button control */
+
+	// When Recording, disable start record button
+	// When Idle, disable stop record button
 	private void toggleRecBtns() {
 		boolean on = rec_strt_btn.isEnabled();
 		rec_strt_btn.setEnabled(!on);
 		rec_stp_btn.setEnabled(on);
 	}
 
+	// Set Play button status
 	private void togglePlayBtn(boolean enable) {
 		play_btn.setEnabled(enable);
 	}
 
 	public void onPlayComplete() {
+		// After play finishes, enable play button again
 		togglePlayBtn(true);
 	}
 
-	// Alarm Control
+	/* Alarm Control */
 	public void onStatusChg(View v) {
 		alarmStatChg();
 	}
 
+	// If alarm was
+	// 		turned ON, register Alarm if possible
+	// 		turned OFF, unregisted Alarm if possible
 	public void alarmStatChg() {
 		boolean enabled = stat_switch.isChecked();
 		if (recFile == null)
@@ -173,6 +193,7 @@ public class Settings extends Activity implements PlayComplete {
 			unregisterAlrm();
 	}
 
+	// Get the alarm time info and register with AlarmManager
 	private void registerAlrm() {
 		int hour = rec.getHour();
 		int min = rec.getMinute();
@@ -216,7 +237,7 @@ public class Settings extends Activity implements PlayComplete {
 										  0);
 	}
 
-	// Time Control
+	/* Time Control */
 	public void selTime(View v) throws Exception {
 		int hr = rec.getHour();
 		int min = rec.getMinute();
@@ -228,13 +249,14 @@ public class Settings extends Activity implements PlayComplete {
 		timeDialog.show(getFragmentManager(), "time_sel");
 	}
 
+	// Callback for Time Picker Dialog
 	public void updateTime(int hour, int min) {
 		rec.setHour(hour);
 		rec.setMinute(min);
 		alarmStatChg();
 	}
 
-	// Menu Buttons
+	/* Menu Operation */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
