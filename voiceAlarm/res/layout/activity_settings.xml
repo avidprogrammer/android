@@ -9,48 +9,48 @@
         android:id="@+id/alarm_status_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/alarm_status" />
+        android:text="@string/alarm_status" 
+        android:onClick="onStatusChg"/>
 
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/alarm_status"
-        android:layout_marginTop="16dp"
         android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/play_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="playRecord"
+            android:text="@string/play" />
+
+        <Button
+            android:id="@+id/rec_start_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="startRecord"
+            android:text="@string/rec_start" />
+
+        <Button
+            android:id="@+id/rec_stop_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:onClick="stopRecord"
+            android:text="@string/rec_stop" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/play_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="playRecord"
-        android:text="@string/play" />
-
-    <Button
-        android:id="@+id/rec_start_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="startRecord"
-        android:text="@string/rec_start" />
-
-    <Button
-        android:id="@+id/rec_stop_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:enabled="false"
-        android:onClick="stopRecord"
-        android:text="@string/rec_stop" />
     <View
-      	android:layout_width="fill_parent"
-     	android:layout_height="2dp"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
         android:background="#CCC"
         android:paddingTop="50dp" />
-    
-    <Button 
-    android:layout_width="wrap_content" 
-    android:layout_height="wrap_content"
-    android:text="@string/sel_time" 
-    android:onClick="selTime" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="selTime"
+        android:text="@string/sel_time" />
 
 </LinearLayout>

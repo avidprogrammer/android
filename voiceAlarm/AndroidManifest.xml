@@ -30,9 +30,12 @@
             android:label="@string/title_activity_record" >
         </activity>
         <activity
-            android:name="com.example.voicealarm.TimeSelect"
+            android:name="com.example.voicealarm.TimeSelFragment"
             android:label="@string/title_activity_time_select" >
         </activity>
+        <receiver  android:process=":remote"
+                   android:name=".AlarmRx"
+                   android:exported="false"/>
     </application>
 
 </manifest>

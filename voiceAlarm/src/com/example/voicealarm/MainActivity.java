@@ -3,7 +3,6 @@ package com.example.voicealarm;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.json.simple.parser.ParseException;
 
@@ -25,8 +24,6 @@ public class MainActivity extends Activity {
 	private ListView alarmListView;
 	private Dbase db;
 	private String JSON_FILE = "voiceAlarm.json";
-	String tag = "DBG";
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,43 +43,47 @@ public class MainActivity extends Activity {
 
 		alarmListView = (ListView) findViewById(R.id.alarmList);
 		initAlarmList();
-
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		Log.d("DBG", "onPause");
 		db.commit();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		initAlarmList();
+	}
+
 	public void addAlarm() {
-		HashMap <String, String> rec = new HashMap <String, String>();
-		rec.put(myConsts.AUD_FILE, "abc");
-		rec.put(myConsts.TIME_H, "1");
-		rec.put(myConsts.TIME_M, "0");
-		rec.put(myConsts.AM_PM, "PM");
-		rec.put(myConsts.ALARM_ID, Integer.toString((int) (Math.random()*5)));
+		AlarmDoc rec = new AlarmDoc();
+		rec.setHour(0);
+		rec.setMinute(0);
+		rec.setStat(false);
+		rec.setTone(null);
+		rec.setIdx(db.getNumRecords());
 
 		Log.d("DBG", "ADD new alarm! : " + rec.toString());
 		db.addRecord(rec);
+		initAlarmList();
 	}
 
 	private OnItemClickListener alarmClick = new OnItemClickListener() {
 		public void onItemClick(AdapterView<?> av, View v, int idx, long id) {
 			Log.d("DBG", v.getContext().toString() + " idx:" + idx);
 			Intent myIntent = new Intent(v.getContext(), Settings.class);
-			myIntent.putExtra("key", idx);
+			myIntent.putExtra(consts.IDX, idx);
 			startActivity(myIntent);
 		}
 	};
 
 	private void initAlarmList() {
-		String[] timeOpts = new String[] { "5s", "1min", "5min", "20min" };
 		ArrayList<String> timeArr = new ArrayList<String>();
 		for (int i = 0; i < db.getNumRecords(); i++) {
-			//HashMap<String, String> rec = db.getRecord(i);
-			timeArr.add(timeOpts[i]);// + ' ' + rec.get(myConsts.IDX));
+			AlarmDoc rec = db.getRecord(i);
+			timeArr.add(rec.getDispText());
 		}
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -93,7 +94,6 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    // Inflate the menu items for use in the action bar
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.main, menu);
 	    return super.onCreateOptionsMenu(menu);

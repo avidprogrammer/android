@@ -10,6 +10,7 @@
     <string name="play">Play</string>
     <string name="sel_time">Pick Time</string>
     <string name="title_activity_time_select">TimeSelect</string>
-    <string name="add_alarm">Add</string>
+    <string name="add_alarm">Add Alarm</string>
+    <string name="del_alarm">Delete Alarm</string>
 
 </resources>

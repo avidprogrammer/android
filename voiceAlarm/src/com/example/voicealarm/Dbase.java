@@ -6,23 +6,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import android.util.Log;
-import android.widget.Toast;
-
-import com.example.voicealarm.myConsts;
 
 public class Dbase {
-	private ArrayList<HashMap<String, String>> records = new ArrayList<HashMap<String, String>>();
+	private ArrayList<AlarmDoc> records = new ArrayList<AlarmDoc>();
 	private String settings;
 
 	private static Dbase dbase = null;
@@ -45,7 +37,7 @@ public class Dbase {
 		JSONObject obj = new JSONObject();
 		JSONArray alrms = new JSONArray();
 		
-		obj.put(myConsts.HDG, alrms);
+		obj.put(consts.HDG, alrms);
 	 
 		try {
 	 		FileWriter file = new FileWriter(settings);
@@ -65,28 +57,25 @@ public class Dbase {
 		JSONArray alrms = null;
 
 		records.clear();
-		settings = myConsts.BASEPATH + File.separator + jsonF;
+		settings = consts.BASEPATH + File.separator + jsonF;
 		initSettings();
 
 		
 		Log.d("DBG", "settings : " + settings);
 
 		obj = (JSONObject) parser.parse(new FileReader(settings));
-		alrms = (JSONArray) obj.get(myConsts.HDG);
+		alrms = (JSONArray) obj.get(consts.HDG);
 		Log.d("DBG", "alrms : " + alrms.toJSONString());
 
 		for (int i = 0; i < alrms.size(); i++) {
 			JSONObject recJson = (JSONObject) alrms.get(i);
-			HashMap<String, String> rec = new HashMap<String, String>();
+			AlarmDoc rec = new AlarmDoc();
 
-			rec.put(myConsts.IDX, Integer.toString(i));
-			for (int j = 0; j < myConsts.REQD_FIELDS.length; j++) {
-				String field = myConsts.REQD_FIELDS[j];
-				if (recJson.containsKey(field))
-					rec.put(field, (String) recJson.get(field));
-				else
-					rec.put(field, null);
-			}
+			rec.setIdx(i);
+			rec.setHour(((Long)(recJson.get(consts.TIME_H))).intValue());
+			rec.setMinute(((Long)(recJson.get(consts.TIME_M))).intValue());
+			rec.setStat((Boolean) recJson.get(consts.ALRM_STAT));
+			rec.setTone((String) recJson.get(consts.AUD_FILE));
 			records.add(rec);
 		}
 	}
@@ -97,16 +86,15 @@ public class Dbase {
 		JSONArray alrms = new JSONArray();
 		for (int i = 0; i < getNumRecords(); i++) {
 			JSONObject recJson = new JSONObject();
-			HashMap<String, String> rec = records.get(i);
-			for (Map.Entry<String, String> entry : rec.entrySet()) {
-				String key = entry.getKey();
-				String val = entry.getValue();
-				if (key != myConsts.IDX)
-					recJson.put(key, val);
-			}
+			AlarmDoc rec = records.get(i);
+			recJson.put(consts.ALRM_STAT, rec.getStat());
+			recJson.put(consts.AUD_FILE, rec.getTone());
+			recJson.put(consts.TIME_H, rec.getHour());
+			recJson.put(consts.TIME_M, rec.getMinute());
+			recJson.put(consts.IDX, rec.getIdx());
 			alrms.add(recJson);
 		}
-		obj.put(myConsts.HDG, alrms);
+		obj.put(consts.HDG, alrms);
 
 		try {
 			FileWriter file = new FileWriter(settings);
@@ -124,43 +112,31 @@ public class Dbase {
 		return records.size();
 	}
 
-	public HashMap<String, String> getRecord(int idx) {
+	public AlarmDoc getRecord(int idx) {
 		return records.get(idx);
 	}
 
-	public void setRecord(HashMap<String, String> rec) {
-		records.set(getRecIdx(rec), rec);
+	public void setRecord(AlarmDoc rec) {
+		records.set(rec.getIdx(), rec);
 	}
 
-	public boolean addRecord(HashMap<String, String> rec) {
-		boolean valid = true;
-		for (int i = 0; i < myConsts.REQD_FIELDS.length; i++) {
-			if (!rec.containsKey(myConsts.REQD_FIELDS[i])) {
-				valid = false;
-				break;
-			}
-		}
-		
+	public void addRecord(AlarmDoc rec) {
 		Log.d("DBG", "Add Record : " + rec.toString());
-
-		if (valid)
-			records.add(rec);
-
-		return valid;
+		records.add(rec);
 	}
 
-	public void deleteRecord(HashMap<String, String> rec) {
-		int delIdx = getRecIdx(rec);
+	public void deleteRecord(AlarmDoc rec) {
+		int delIdx = rec.getIdx();
 		int totIdx = getNumRecords() - 1;
+		AlarmDoc totRec = getRecord(totIdx);
 
 		if (delIdx != totIdx)
-			records.set(delIdx, getRecord(totIdx));
+		{
+			records.set(delIdx, totRec);
+			totRec.setIdx(delIdx);
+		}
 
 		records.remove(totIdx);
+		Log.d("DBG", "After delete : " + records.toString());
 	}
-
-	private int getRecIdx(HashMap<String, String> rec) {
-		return Integer.valueOf(rec.get(myConsts.IDX));
-	}
-
 }

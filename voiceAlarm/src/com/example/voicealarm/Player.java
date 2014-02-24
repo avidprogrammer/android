@@ -1,17 +1,15 @@
 package com.example.voicealarm;
 
-import java.io.File;
-
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.util.Log;
 
-public class Player implements playCompletion {
+public class Player implements PlayComplete {
 	private MediaPlayer plyr = null;
-	private playCompletion pc_ptr;
+	private PlayComplete pc_ptr;
 
-	public Player(playCompletion fn_ptr) {
+	public Player(PlayComplete fn_ptr) {
 		pc_ptr = fn_ptr;
 
 		plyr = new MediaPlayer();
@@ -24,13 +22,13 @@ public class Player implements playCompletion {
 		plyr.release();
 	}
 
-	public void play(File srcFile) throws Exception {
+	public void play(String srcFile) throws Exception {
 		if (srcFile == null)
 			return;
 
-		Log.d("DBG", "Player Src File" + srcFile.getAbsolutePath());
+		Log.d("DBG", "Player Src File" + srcFile);
 		try {
-			plyr.setDataSource(srcFile.getAbsolutePath());
+			plyr.setDataSource(srcFile);
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		}
