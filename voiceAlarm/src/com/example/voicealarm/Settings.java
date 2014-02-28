@@ -60,10 +60,12 @@ public class Settings extends Activity implements PlayComplete {
 		// If alarm was
 		// turned ON, register Alarm if possible
 		// turned OFF, unregister Alarm if possible
-		if (rec.getStat())
-			registerAlrm();
-		else
-			unregisterAlrm();
+		if (rec != null) {
+			if (rec.getStat())
+				registerAlrm();
+			else
+				unregisterAlrm();
+		}
 	}
 
 	// On settings activity init, populate params from Dbase
@@ -82,7 +84,6 @@ public class Settings extends Activity implements PlayComplete {
 
 	// Delete this alarm from Dbase and also the associated audio file
 	private void delAlarm() {
-		AlarmDoc rec = db.getRecord(id);
 		String alrmPath = rec.getTone();
 		Log.d("DBG", "Deleting record : " + rec.toString());
 
@@ -91,8 +92,10 @@ public class Settings extends Activity implements PlayComplete {
 			alrmTune.delete();
 		}
 
-		db.deleteRecord(db.getRecord(id));
 		unregisterAlrm();
+		db.deleteRecord(rec);
+		rec = null;
+		recFile = null;
 		this.finish();
 	}
 
