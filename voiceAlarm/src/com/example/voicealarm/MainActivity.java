@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
 		}
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				R.layout.alarm_obj, R.id.alarmTv, timeArr);
+				R.layout.alarm_row, R.id.alarmTv, timeArr);
 		alarmListView.setAdapter(adapter);
 		alarmListView.setOnItemClickListener(alarmClick);
 	}

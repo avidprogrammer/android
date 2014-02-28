@@ -56,6 +56,14 @@ public class Settings extends Activity implements PlayComplete {
 		super.onPause();
 		stopRecording();
 		mplyr.delPlayer();
+
+		// If alarm was
+		// turned ON, register Alarm if possible
+		// turned OFF, unregister Alarm if possible
+		if (rec.getStat())
+			registerAlrm();
+		else
+			unregisterAlrm();
 	}
 
 	// On settings activity init, populate params from Dbase
@@ -70,14 +78,6 @@ public class Settings extends Activity implements PlayComplete {
 			recFile = new File(consts.BASEPATH + File.separator + recFileName);
 
 		stat_switch.setChecked(alrmStat);
-	}
-
-	private void clrRecorder() {
-		if (rcdr != null) {
-			rcdr.stop();
-			rcdr.reset();
-			rcdr.release();
-		}
 	}
 
 	// Delete this alarm from Dbase and also the associated audio file
@@ -107,10 +107,10 @@ public class Settings extends Activity implements PlayComplete {
 		rcdr.setOnInfoListener(new OnInfoListener() {
 			@Override
 			public void onInfo(MediaRecorder mr, int reason, int extra) {
-				if(reason == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED) {
+				if (reason == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED) {
 					Toast.makeText(getBaseContext(),
-								   "Max Recording duration reached",
-								   Toast.LENGTH_SHORT).show();
+							"Max Recording duration reached",
+							Toast.LENGTH_SHORT).show();
 					stopRecording();
 				}
 			}
@@ -137,7 +137,12 @@ public class Settings extends Activity implements PlayComplete {
 	};
 
 	private void stopRecording() {
-		clrRecorder();
+		if (rcdr != null) {
+			rcdr.stop();
+			rcdr.reset();
+			rcdr.release();
+			rcdr = null;
+		}
 		toggleRecBtns();
 		togglePlayBtn(true);
 	}
@@ -171,26 +176,14 @@ public class Settings extends Activity implements PlayComplete {
 
 	/* Alarm Control */
 	public void onStatusChg(View v) {
-		alarmStatChg();
-	}
-
-	// If alarm was
-	// 		turned ON, register Alarm if possible
-	// 		turned OFF, unregisted Alarm if possible
-	public void alarmStatChg() {
 		boolean enabled = stat_switch.isChecked();
-		if (recFile == null)
-		{
+		if (recFile == null) {
 			Toast.makeText(getApplicationContext(),
-						   "Please record an audio message first",
-						   Toast.LENGTH_LONG).show();
+					"Please record an audio message first", Toast.LENGTH_LONG)
+					.show();
 			stat_switch.setChecked(false);
 		}
 		rec.setStat(enabled);
-		if (enabled)
-			registerAlrm();
-		else
-			unregisterAlrm();
 	}
 
 	// Get the alarm time info and register with AlarmManager
@@ -211,9 +204,8 @@ public class Settings extends Activity implements PlayComplete {
 			calAlarm.add(Calendar.DATE, 1);
 
 		AlarmManager alarmMgr = (AlarmManager) getSystemService(ALARM_SERVICE);
-		alarmMgr.set(AlarmManager.RTC_WAKEUP,
-					 calAlarm.getTimeInMillis(),
-					 getPendIntent());
+		alarmMgr.set(AlarmManager.RTC_WAKEUP, calAlarm.getTimeInMillis(),
+				getPendIntent());
 
 		Log.d("DBG", "register alarm");
 	}
@@ -231,10 +223,8 @@ public class Settings extends Activity implements PlayComplete {
 		Intent alrmIntent = new Intent(getBaseContext(), AlarmRx.class);
 		alrmIntent.putExtra(consts.AUD_FILE, recFile.getAbsolutePath());
 
-		return PendingIntent.getBroadcast(getBaseContext(),
-				   						  alarm_idx,
-										  alrmIntent,
-										  0);
+		return PendingIntent.getBroadcast(getBaseContext(), alarm_idx,
+				alrmIntent, 0);
 	}
 
 	/* Time Control */
@@ -253,7 +243,6 @@ public class Settings extends Activity implements PlayComplete {
 	public void updateTime(int hour, int min) {
 		rec.setHour(hour);
 		rec.setMinute(min);
-		alarmStatChg();
 	}
 
 	/* Menu Operation */
