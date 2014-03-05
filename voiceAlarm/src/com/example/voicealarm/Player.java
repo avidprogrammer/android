@@ -63,13 +63,12 @@ public class Player implements PlayComplete {
 
 	public void clearPlayer() {
 		if (plyr != null) {
-			boolean isPlaying = false;
-			try {isPlaying = plyr.isPlaying();}
-			catch (IllegalStateException e) {}
-			if (isPlaying) {
-				plyr.stop();
+			try {
+				if(plyr.isPlaying())
+					plyr.stop();
 				plyr.reset();
 			}
+			catch (IllegalStateException e) {}
 		}
 	}
 

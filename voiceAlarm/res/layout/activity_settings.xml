@@ -20,6 +20,7 @@
 
         <Button
             android:id="@+id/play_btn"
+            style="@style/FlatBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="playRecord"
@@ -29,6 +30,7 @@
             android:id="@+id/rec_start_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/FlatBtn"
             android:onClick="startRecord"
             android:text="@string/rec_start" />
 
@@ -36,6 +38,7 @@
             android:id="@+id/rec_stop_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/FlatBtn"
             android:enabled="false"
             android:onClick="stopRecord"
             android:text="@string/rec_stop" />
@@ -50,6 +53,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/FlatBtn"
         android:onClick="selTime"
         android:text="@string/sel_time" />
 

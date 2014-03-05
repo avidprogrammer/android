@@ -17,12 +17,10 @@
 
     <Button
         android:id="@+id/alarm_dismiss_btn"
+        style="@style/FlatBtn"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
         android:onClick="dismiss"
-        android:padding="20dp"
-        android:text="@string/dismiss"
-        android:textColor="#FFF" />
+        android:text="@string/dismiss"/>
 
 </RelativeLayout>
