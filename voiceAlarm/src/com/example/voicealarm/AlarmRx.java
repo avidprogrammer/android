@@ -3,31 +3,20 @@ package com.example.voicealarm;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.net.Uri;
-import android.widget.Toast;
 
 public class AlarmRx extends BroadcastReceiver {
+	private WakeLk lock = null;
 
 	@Override
 	public void onReceive(Context c, Intent i) {
-		String playFile = i.getStringExtra(consts.AUD_FILE);
-		int idx = i.getIntExtra(consts.IDX, 0);
-		
-		Toast.makeText(c, "Alarm Rx", Toast.LENGTH_LONG).show();
+		lock = WakeLk.getInstance();
+		lock.acquireLock(c);
 
-		NotificationManager mgr = (NotificationManager)c.getSystemService(Context.NOTIFICATION_SERVICE);
-	    
-	    Notification noti = new Notification.Builder(c)
-        .setContentTitle("Alarm")
-        .setSmallIcon(R.drawable.ic_audio_alarm)
-        .setSound(Uri.parse(playFile))
-        .build();
-	    
-	    noti.flags |= Notification.FLAG_INSISTENT;
-	    
-	    mgr.notify(idx, noti);
-  
+		String playFile = i.getStringExtra(consts.AUD_FILE);
+		Intent alrmIntent = new Intent(c, AlarmAlert.class);
+		alrmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		alrmIntent.putExtra(consts.AUD_FILE, playFile);
+		
+		c.startActivity(alrmIntent);
 	}
 }

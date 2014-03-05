@@ -38,7 +38,11 @@ public class Player implements PlayComplete {
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		}
+	}
 
+	public void playLooping(String srcFile) throws Exception {
+		plyr.setLooping(true);
+		play(srcFile);
 	}
 
 	// Prepare media player asynchronously
@@ -59,9 +63,13 @@ public class Player implements PlayComplete {
 
 	public void clearPlayer() {
 		if (plyr != null) {
-			if (plyr.isPlaying())
+			boolean isPlaying = false;
+			try {isPlaying = plyr.isPlaying();}
+			catch (IllegalStateException e) {}
+			if (isPlaying) {
 				plyr.stop();
-			plyr.reset();
+				plyr.reset();
+			}
 		}
 	}
 

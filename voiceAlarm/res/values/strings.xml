@@ -12,5 +12,7 @@
     <string name="title_activity_time_select">TimeSelect</string>
     <string name="add_alarm">Add Alarm</string>
     <string name="del_alarm">Delete Alarm</string>
+    <string name="title_activity_alarm_alert">Alarm</string>
+    <string name="dismiss">Dismiss</string>
 
 </resources>

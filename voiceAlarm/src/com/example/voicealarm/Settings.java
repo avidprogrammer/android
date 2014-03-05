@@ -55,6 +55,11 @@ public class Settings extends Activity implements PlayComplete {
 	protected void onPause() {
 		super.onPause();
 		stopRecording();
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
 		mplyr.delPlayer();
 
 		// If alarm was

@@ -17,5 +17,6 @@ public class consts {
 	public static final String IDX = "idx";
 	public static final String HDG = "alarms";
 	public static final int MAX_REC_DUR = 10 * 1000; // in ms
+	public static final String APPTAG = "voiceAlarm";
 
 }
