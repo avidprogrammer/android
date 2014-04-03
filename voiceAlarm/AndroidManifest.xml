@@ -43,7 +43,9 @@
         <activity
             android:name="com.example.voicealarm.AlarmAlert"
             android:label="@string/title_activity_alarm_alert"
+            android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.Dialog" >
+
         </activity>
     </application>
 
