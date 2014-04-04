@@ -9,6 +9,7 @@
     <string name="alarm_status">Alarm</string>
     <string name="play">Play</string>
     <string name="sel_time">Pick Time</string>
+    <string name="sel_day">Repeat</string>
     <string name="title_activity_time_select">TimeSelect</string>
     <string name="add_alarm">Add Alarm</string>
     <string name="del_alarm">Delete Alarm</string>

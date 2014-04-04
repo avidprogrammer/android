@@ -1,6 +1,7 @@
 package com.example.voicealarm;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.media.MediaRecorder;
@@ -8,8 +9,10 @@ import android.media.MediaRecorder.OnInfoListener;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -230,6 +233,7 @@ public class Settings extends Activity implements PlayComplete {
 		int alarm_idx = rec.getIdx();
 		Intent alrmIntent = new Intent(getBaseContext(), AlarmRx.class);
 		alrmIntent.putExtra(consts.AUD_FILE, recFile.getAbsolutePath());
+		alrmIntent.putExtra(consts.DTW, rec.getDaysBmsk());
 
 		return PendingIntent.getBroadcast(getBaseContext(), alarm_idx,
 				alrmIntent, 0);
@@ -251,6 +255,40 @@ public class Settings extends Activity implements PlayComplete {
 	public void updateTime(int hour, int min) {
 		rec.setHour(hour);
 		rec.setMinute(min);
+	}
+
+
+	/* Day Control */
+	public void selDay(View v) {
+		final ArrayList<Integer> selected = new ArrayList<Integer>();
+		AlertDialog.Builder dayDialog = new AlertDialog.Builder(this);
+
+		DialogInterface.OnMultiChoiceClickListener dayClicked = new DialogInterface.OnMultiChoiceClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+				if (isChecked) {
+					selected.add(which);
+				} else {
+					int whichidx = selected.indexOf(which);
+					if (whichidx != -1)
+						selected.remove(whichidx);
+				}
+			}
+		};
+
+		DialogInterface.OnClickListener okClicked = new DialogInterface.OnClickListener() {		
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				rec.setDaysAsBmsk(selected);
+				Log.d("DBG", selected.toString());
+			}
+		};
+
+		dayDialog.setTitle(R.string.sel_day)
+				 .setMultiChoiceItems(consts.DAYS, null, dayClicked)
+				 .setPositiveButton("OK", okClicked);
+
+		dayDialog.show();
 	}
 
 	/* Menu Operation */

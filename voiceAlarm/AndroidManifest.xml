@@ -42,10 +42,13 @@
 
         <activity
             android:name="com.example.voicealarm.AlarmAlert"
-            android:label="@string/title_activity_alarm_alert"
             android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_alarm_alert"
             android:theme="@android:style/Theme.Dialog" >
-
+        </activity>
+        <activity
+            android:name="com.example.voicealarm.DaySelDialog"
+            android:label="@string/title_activity_day_sel_dialog" >
         </activity>
     </application>
 

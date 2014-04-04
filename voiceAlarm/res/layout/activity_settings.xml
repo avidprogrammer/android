@@ -47,7 +47,20 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="2dp"
-        android:background="#CCC"
+        android:background="#AAA"
+        android:paddingTop="50dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/FlatBtn"
+        android:onClick="selDay"
+        android:text="@string/sel_day" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#AAA"
         android:paddingTop="50dp" />
 
     <Button

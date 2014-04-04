@@ -76,6 +76,7 @@ public class Dbase {
 			rec.setMinute(((Long)(recJson.get(consts.TIME_M))).intValue());
 			rec.setStat((Boolean) recJson.get(consts.ALRM_STAT));
 			rec.setTone((String) recJson.get(consts.AUD_FILE));
+			rec.setDaysBmsk(((Long)(recJson.get(consts.DTW))).intValue());
 			records.add(rec);
 		}
 	}
@@ -92,6 +93,7 @@ public class Dbase {
 			recJson.put(consts.TIME_H, rec.getHour());
 			recJson.put(consts.TIME_M, rec.getMinute());
 			recJson.put(consts.IDX, rec.getIdx());
+			recJson.put(consts.DTW, rec.getDaysBmsk());
 			alrms.add(recJson);
 		}
 		obj.put(consts.HDG, alrms);

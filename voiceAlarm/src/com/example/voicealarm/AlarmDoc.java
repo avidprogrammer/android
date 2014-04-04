@@ -1,11 +1,14 @@
 package com.example.voicealarm;
 
+import java.util.ArrayList;
+
 public class AlarmDoc {
 	private int hour = 0;
 	private int minute = 0;
 	private String tonePath = "";
 	private int index = 0;
 	private boolean status = false;
+	private int daysBmsk = 0;
 	
 	public void setHour(int hr) {
 		hour = hr;
@@ -63,5 +66,19 @@ public class AlarmDoc {
 
 			
 		return String.valueOf(hr) + ":" + min + " " + aPm;
+	}
+
+	public void setDaysBmsk(int thisBmsk) {
+		daysBmsk = thisBmsk;
+	}
+
+	public void setDaysAsBmsk(ArrayList<Integer> selected) {
+		daysBmsk = 0;
+		for(int i=0; i< selected.size(); i++)
+			daysBmsk |= (1 << selected.get(i));
+	}
+
+	public int getDaysBmsk() {
+		return daysBmsk;
 	}
 }
