@@ -23,7 +23,6 @@ public class MainActivity extends Activity {
 
 	private ListView alarmListView;
 	private Dbase db;
-	private String JSON_FILE = "voiceAlarm.json";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +32,7 @@ public class MainActivity extends Activity {
 		// Dbase is a singleton class and populates from the settings file.
 		// The settings file is stored in JSON
 		db = Dbase.getInstance();
-		try {
-			db.init(JSON_FILE);
-		} catch (FileNotFoundException e) {
-			Log.d("DBG", "file not found");
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		db.init(consts.SET_FILE);
 
 		alarmListView = (ListView) findViewById(R.id.alarmList);
 		initAlarmList();

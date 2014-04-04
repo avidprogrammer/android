@@ -30,7 +30,6 @@ public class Dbase {
 
 	private void initSettings() {
 		File sttngs = new File(settings);
-		Log.d("DBG", "FIle exists : "+sttngs.exists());
 		if (sttngs.exists())
 			return;
 		
@@ -49,8 +48,7 @@ public class Dbase {
 		}
 	}
 
-	public void init(String jsonF) throws FileNotFoundException, IOException,
-			ParseException {
+	public void init(String jsonF) {
 
 		JSONParser parser = new JSONParser();
 		JSONObject obj = null;
@@ -63,7 +61,16 @@ public class Dbase {
 		
 		Log.d("DBG", "settings : " + settings);
 
-		obj = (JSONObject) parser.parse(new FileReader(settings));
+		try {
+			obj = (JSONObject) parser.parse(new FileReader(settings));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
 		alrms = (JSONArray) obj.get(consts.HDG);
 		Log.d("DBG", "alrms : " + alrms.toJSONString());
 
@@ -117,7 +124,18 @@ public class Dbase {
 	public AlarmDoc getRecord(int idx) {
 		return records.get(idx);
 	}
-
+	
+	public AlarmDoc getRecordByAudFl(String audioPath) {
+		AlarmDoc thisDoc;
+		for (int i=0; i < getNumRecords(); i++)
+		{
+			thisDoc = getRecord(i);
+			if (audioPath.contains(thisDoc.getTone()))
+				return thisDoc;
+		}
+		return null;
+	}
+	
 	public void setRecord(AlarmDoc rec) {
 		records.set(rec.getIdx(), rec);
 	}

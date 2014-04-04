@@ -18,6 +18,7 @@ public class consts {
 	public static final String DTW = "days_of_the_week";
 	public static final int MAX_REC_DUR = 10 * 1000; // in ms
 	public static final String APPTAG = "voiceAlarm";
+	public static final String SET_FILE = "voiceAlarm.json";
 
 	public static final String MON = "Monday";
 	public static final String TUE = "Tuesday";
@@ -27,5 +28,5 @@ public class consts {
 	public static final String SAT = "Saturday";
 	public static final String SUN = "Sunday";
 
-	public static final String[] DAYS = {MON, TUE, WED, THU, FRI, SAT, SUN};
+	public static final String[] DAYS = {SUN, MON, TUE, WED, THU, FRI, SAT};
 }
