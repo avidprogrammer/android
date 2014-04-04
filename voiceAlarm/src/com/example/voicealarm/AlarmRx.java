@@ -9,13 +9,20 @@ import android.util.Log;
 
 public class AlarmRx extends BroadcastReceiver {
 	private WakeLk lock = null;
+	private Dbase db;
 
 	@Override
 	public void onReceive(Context c, Intent i) {
 		lock = WakeLk.getInstance();
-
+		db = Dbase.getInstance();
+		db.init(consts.SET_FILE);
+		
 		String playFile = i.getStringExtra(consts.AUD_FILE);
-		int alarmDays = i.getIntExtra(consts.DTW, 0);
+		AlarmDoc thisDoc = db.getRecordByAudFl(playFile);
+		if (thisDoc == null)
+			return;
+		
+		int alarmDays = thisDoc.getDaysBmsk(); 
 		Calendar todayCal = Calendar.getInstance();
 		int today = todayCal.get(Calendar.DAY_OF_WEEK) - 1;
 
@@ -35,7 +42,7 @@ public class AlarmRx extends BroadcastReceiver {
 		// OR the day of the week with the alarm bit mask to determine
 		//  if alarm needs to go off
 		int res = ((1 << today) & alarmBmsk);
-		Log.d("DBG", "today : " + Integer.toString(today) +
+		Log.d("DBG", "today : " + Integer.toHexString(1<<today) +
 					 " bmsk :" + Integer.toHexString(alarmBmsk) +
 					 " res : " + Integer.toString(res));
 		return res;
