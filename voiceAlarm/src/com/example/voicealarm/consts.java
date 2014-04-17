@@ -16,6 +16,7 @@ public class consts {
 	public static final String IDX = "idx";
 	public static final String HDG = "alarms";
 	public static final String DTW = "days_of_the_week";
+	public static final String ONE_SHOT = "one_shot";
 	public static final int MAX_REC_DUR = 10 * 1000; // in ms
 	public static final String APPTAG = "voiceAlarm";
 	public static final String SET_FILE = "voiceAlarm.json";

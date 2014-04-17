@@ -27,9 +27,14 @@ public class AlarmRx extends BroadcastReceiver {
 		int today = todayCal.get(Calendar.DAY_OF_WEEK) - 1;
 
 		// Check if the alarm is required to go off today
-		if (isTodayAlarmDay(today, alarmDays) == 0)
+		if ((isTodayAlarmDay(today, alarmDays) == 0) &&
+			(thisDoc.getOneShot() == false))
 			return;
 
+		// Set one shot false after first invocation
+		thisDoc.setOneShot(false);
+		db.commit();
+		
 		lock.acquireLock(c);
 		Intent alrmIntent = new Intent(c, AlarmAlert.class);
 		alrmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -2,6 +2,8 @@ package com.example.voicealarm;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 public class AlarmDoc {
 	private int hour = 0;
 	private int minute = 0;
@@ -9,6 +11,7 @@ public class AlarmDoc {
 	private int index = 0;
 	private boolean status = false;
 	private int daysBmsk = 0;
+	private boolean oneShot = true;
 	
 	public void setHour(int hr) {
 		hour = hr;
@@ -80,5 +83,37 @@ public class AlarmDoc {
 
 	public int getDaysBmsk() {
 		return daysBmsk;
+	}
+	
+	public boolean[] getDaysBoolArr(){
+		boolean days[] = {false, false, false, false, false, false, false};
+		int bmsk = daysBmsk;
+		for (int i=0; (i < 7) && (bmsk != 0); i++)
+		{
+			days[i] = ((bmsk & (1 << i)) > 0);
+			bmsk &= ~(1 << i);
+		}
+		return days;
+	}
+	
+	public ArrayList<Integer> getDaysArr() {
+		ArrayList<Integer> days = new ArrayList<Integer>();
+		int bmsk = daysBmsk;
+		for(int i=0; (i<7) && (bmsk !=0); i++)
+		{
+			if ((bmsk & (1<<i)) > 0)
+				days.add(i);
+			bmsk &= ~(1<<i);
+		}
+		return days;
+	}
+	
+	public void setOneShot(boolean val){
+		oneShot = val;
+		Log.d("DBG", "Set one shot" + val);
+	}
+	
+	public boolean getOneShot(){
+		return oneShot;		
 	}
 }

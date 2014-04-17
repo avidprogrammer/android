@@ -260,7 +260,7 @@ public class Settings extends Activity implements PlayComplete {
 
 	/* Day Control */
 	public void selDay(View v) {
-		final ArrayList<Integer> selected = new ArrayList<Integer>();
+		final ArrayList<Integer> selected = rec.getDaysArr();
 		AlertDialog.Builder dayDialog = new AlertDialog.Builder(this);
 
 		DialogInterface.OnMultiChoiceClickListener dayClicked = new DialogInterface.OnMultiChoiceClickListener() {
@@ -285,7 +285,7 @@ public class Settings extends Activity implements PlayComplete {
 		};
 
 		dayDialog.setTitle(R.string.sel_day)
-				 .setMultiChoiceItems(consts.DAYS, null, dayClicked)
+				 .setMultiChoiceItems(consts.DAYS, rec.getDaysBoolArr(), dayClicked)
 				 .setPositiveButton("OK", okClicked);
 
 		dayDialog.show();
