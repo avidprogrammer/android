@@ -33,6 +33,7 @@ public class AlarmRx extends BroadcastReceiver {
 
 		// Set one shot false after first invocation
 		thisDoc.setOneShot(false);
+		db.setRecord(thisDoc);
 		db.commit();
 		
 		lock.acquireLock(c);

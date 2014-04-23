@@ -214,7 +214,6 @@ public class Settings extends Activity implements PlayComplete {
 		if (calAlarm.compareTo(calNow) <= 0)
 			calAlarm.add(Calendar.DATE, 1);
 
-		unregisterAlrm();
 		AlarmManager alarmMgr = (AlarmManager) getSystemService(ALARM_SERVICE);
 		alarmMgr.set(AlarmManager.RTC_WAKEUP, calAlarm.getTimeInMillis(),
 				getPendIntent());
